@@ -1,7 +1,8 @@
 #include<iostream>
 #include<stdio.h>
 #include<stdbool.h>
-
+#include<queue>
+using namespace std;
 struct node {
 	int data;
 	node* right;
@@ -48,23 +49,25 @@ node* insert_val(node* root, int x) {
 	}
 }
 
-/*void print_tree() {
-	node* position = root;
-	node* position_left = position->left;
-	node* position_right = position->right;
-	printf("%d\n", position->data);
-	if (position_left != NULL || position_right != NULL) {
-		printf("/    |\n");
-		if (position_left != NULL) {
-			printf("%d", position_left->data);
-		}
-		if (position_right != NULL) {
-			printf("    %d", position_right->data);
-		}
-
+void print_tree_level(node* root) {
+	if (root == NULL) return;
+	node* temp;
+	queue<node*> Q;
+	queue<int> level;
+	Q.push(root);
+	level.push(0);
+	while (!Q.empty()) {
+		temp = Q.front();
+		int old_level = level.front();
+		if (temp->left != NULL) Q.push(temp->left); level.push(level.front() + 1);
+		if (temp->right != NULL) Q.push(temp->right); level.push(level.front() + 1);
+		printf("%d level %d           ", temp->data, level.front());
+		Q.pop();
+		level.pop();
+		if (old_level != level.front()) printf("\n");
 	}
 }
-*/
+
 
 node* rec_insert_val(node* root, int x) {
 	if (root == NULL) {
@@ -118,7 +121,5 @@ int main() {
 	root_tree_1 = insert_val(root_tree_1, 12);
 	root_tree_1 = rec_insert_val(root_tree_1, 17);
 	test_data = data_exists(root_tree_1, 17);
-	printf("%d\n",test_data);
-	
-
+	print_tree_level(root_tree_1);
 }
