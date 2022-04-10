@@ -1,5 +1,6 @@
 #include<iostream>
 #include<stdio.h>
+#include<stdbool.h>
 
 struct node {
 	int data;
@@ -86,11 +87,38 @@ node* rec_insert_val(node* root, int x) {
 	return root;
 }
 
-int main() {
 
+bool data_exists(node* root, int x) {
+	bool temp;
+	if (root == NULL) {
+		printf("The data dosen't exist\n");
+		return false;
+	}
+	else if (x == root->data) {
+		printf("The data exists\n");
+		return true;
+	}
+	else if (x <= root->data) {
+		temp = data_exists(root->left, x);
+		return temp;
+	}
+	else {
+		temp = data_exists(root->right, x);
+		return temp;
+	}
+}
+
+
+int main() {
+	bool test_data;
 	node* root_tree_1 = NULL;
 	root_tree_1= rec_insert_val(root_tree_1,10);
 	root_tree_1 = rec_insert_val(root_tree_1,13);
 	root_tree_1 = rec_insert_val(root_tree_1,8);
 	root_tree_1 = insert_val(root_tree_1, 12);
+	root_tree_1 = rec_insert_val(root_tree_1, 17);
+	test_data = data_exists(root_tree_1, 17);
+	printf("%d\n",test_data);
+	
+
 }
